@@ -50,10 +50,12 @@
 <body>
   <header class="site-nav">
     <div class="wrap">
-      <a class="brand" href="/" aria-label="Plaza Aura, inicio">
-        <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="6" y="26" width="34" height="12" rx="6" fill="#123a57" stroke="#1d6fb8" stroke-width="3"/><circle cx="48" cy="32" r="11" fill="none" stroke="#5ec9f0" stroke-width="5"/><circle cx="48" cy="32" r="3.5" fill="#5ec9f0"/></svg>
-        Plaza Aura
-      </a>
+      <div class="brand-group">
+        <button type="button" class="brand-sesion" id="inicio-sesion" data-aura-hub="plaza" aria-haspopup="dialog" aria-label="Plaza Aura: tu cuenta y Convergencia Aura" title="Tu cuenta y Convergencia Aura">
+          <img src="img/logo-plaza.png" alt="" width="44" height="44">
+        </button>
+        <a class="brand" href="/" aria-label="Plaza Aura, inicio">Plaza Aura</a>
+      </div>
       <nav class="nav-links" aria-label="Principal">
         <a href="#canales">Canales</a>
         <a href="#tu-canal">Crea tu canal</a>
@@ -206,5 +208,12 @@
       <nav aria-label="Pie de página"><a href="https://core.convergenciaaura.cl/normas-chats.html">Normas de los chats</a></nav>
     </div>
   </footer>
+
+  <!-- Sesión compartida de Convergencia Aura (cookie de .convergenciaaura.cl) y menú común del botón-logo.
+       El orden importa: supabase-js → aura-auth.js (crea window.auraClient) → aura-hub.js. -->
+  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script defer src="https://convergenciaaura.cl/aura-auth.js"></script>
+  <script defer src="https://convergenciaaura.cl/aura-hub.js"></script>
+  <script defer src="js/plaza-sesion.js"></script>
 </body>
 </html>
