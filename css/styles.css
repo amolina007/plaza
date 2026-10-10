@@ -72,7 +72,7 @@ p { margin: 0; }
 
 /* Botón-logo: abre el menú común de Convergencia Aura. El hub escribe data-estado = on | off | cargando.
    Anillo verde con sesión, rojo sin sesión (igual que AuraRitmos y AuraLadra). */
-.brand-sesion { flex-shrink: 0; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 50%; background: #000; cursor: pointer; box-shadow: 0 0 0 2px rgba(94, 201, 240, .28); transition: box-shadow .15s; }
+.brand-sesion { flex-shrink: 0; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 50%; background: #060d1f; cursor: pointer; box-shadow: 0 0 0 2px rgba(94, 201, 240, .28); transition: box-shadow .15s; }
 .brand-sesion img { display: block; width: 100%; height: 100%; border-radius: 50%; }
 .brand-sesion:hover, .brand-sesion:focus-visible { box-shadow: 0 0 0 3px var(--cyan); }
 .brand-sesion:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
