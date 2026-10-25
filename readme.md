@@ -23,3 +23,15 @@ de Core. «Ver más» despliega el resto y «Ver menos» vuelve a ocho.
 No calcula EXP desde AC ni crea una segunda sesión. Los errores no se muestran
 como cero. Los cambios del panel requieren publicar AuraCore; aquí se conserva
 el formulario de entrada del sitio y no se aplican migraciones.
+
+
+### Selección del panel por entorno
+
+El cargador local del panel elige
+`https://dev--convergencia-aura-core.netlify.app/js/aura-hub.js` para los dominios
+`dev--*.netlify.app`, `dev.convergenciaaura.cl` y localhost. En dominios de
+producción sigue usando `https://core.convergenciaaura.cl/js/aura-hub.js`.
+Esto evita que un despliegue dev cargue accidentalmente el panel antiguo de main.
+Las políticas CSP de los sitios que las requieren permiten únicamente estos
+orígenes concretos de Core en script-src; no se desactiva CSP ni se amplían las
+permisiones de datos. No se cambia main ni se trasladan sesiones entre dominios.
