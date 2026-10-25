@@ -12,3 +12,14 @@ Portada pública de Plaza Aura (https://plaza.convergenciaaura.cl/). El chat viv
 No agregues `X-Robots-Tag` a `_headers` ni `noindex` a `index.html`: bloquearían producción. El bloqueo de dev lo agrega `build.sh`.
 
 El `sitemap.xml` lista solo páginas públicas reales de este dominio. Si se crea una página pública nueva, agrégala ahí. Las conversaciones no están en este sitio y nunca deben listarse.
+
+
+## Panel común de sesión
+
+El botón con logo carga `https://core.convergenciaaura.cl/js/aura-hub.js`.
+Muestra EXP acumulada de `core.mi_exp()` (en lugar de ELO), saldo AC desde la
+consulta existente de cuenta y hasta ocho proyectos con su estado del catálogo
+de Core. «Ver más» despliega el resto y «Ver menos» vuelve a ocho.
+No calcula EXP desde AC ni crea una segunda sesión. Los errores no se muestran
+como cero. Los cambios del panel requieren publicar AuraCore; aquí se conserva
+el formulario de entrada del sitio y no se aplican migraciones.
