@@ -12,7 +12,7 @@ OUT="dist"
 rm -rf "$OUT"
 mkdir -p "$OUT"
 
-cp -R index.html css img "$OUT"/
+cp -R index.html css img js "$OUT"/
 cp _headers robots.txt "$OUT"/
 
 if [ "${CONTEXT:-}" = "production" ]; then
