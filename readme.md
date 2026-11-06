@@ -35,3 +35,38 @@ Esto evita que un despliegue dev cargue accidentalmente el panel antiguo de main
 Las políticas CSP de los sitios que las requieren permiten únicamente estos
 orígenes concretos de Core en script-src; no se desactiva CSP ni se amplían las
 permisiones de datos. No se cambia main ni se trasladan sesiones entre dominios.
+
+## Directorio de Plaza (dev)
+
+El directorio consulta `core.plaza_dev_directorio()` en cada carga y al pulsar
+Actualizar. Nombres, descripciones y membresías pertenecen a Core; no hay una
+copia estática ni una suma engañosa de integrantes como usuarios únicos.
+`integrantes` cuenta inscripciones en `sala_miembros`, excluyendo expulsiones;
+no representa presencia en línea ni autorizaciones aún no inscritas.
+
+- Visitantes: solo salas activas públicas.
+- Con sesión: también privadas/restringidas permitidas por `puedo_ver_sala`.
+- Se excluyen cuentas inactivas y salas de las que la cuenta fue expulsada.
+- Origen: `creada_por IS NULL` = Convergencia; de lo contrario, usuarios.
+- No se enumeran mensajes, correos ni identidades de los integrantes.
+- Core todavía no guarda reglas particulares. `core.plaza_dev_reglas` las
+  incorpora exclusivamente para esta revisión. Se editan en la ficha, por el
+  creador o moderación, siempre con acceso vigente. Ausencia de reglas se
+  informa explícitamente y se enlazan las normas generales.
+- Los enlaces llevan a Messenger dev y explican qué sala seleccionar; Core
+  no dispone actualmente de una ruta de enlace directo por canal.
+
+El acceso de Plaza usa la misma identidad Supabase de Core, con sesión propia
+persistente en el origen de Plaza. Esto permite probar en Netlify, donde las
+cookies de convergenciaaura.cl no funcionan. El formulario solicita un código
+para cuentas existentes; no envía nada hasta que la persona lo solicite.
+Se carga el canje oficial de accesos secundarios de Core.
+
+La migración es aditiva: no cambia salas, mensajes, políticas existentes ni
+membresías. La interfaz rechaza el dominio de producción hasta una promoción
+explícita. Antes de promover, acordar el destino definitivo de las reglas,
+la sesión compartida y la URL de Core. No basta con fusionar esta fase.
+
+Verificación: `sh build.sh`, compilación de JS, prueba real RPC como `anon`,
+y `tests/directorio-permisos.sql` (transacción con rollback; datos existentes
+se usan como contexto de prueba, ninguna edición de prueba queda guardada).
