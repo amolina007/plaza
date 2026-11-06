@@ -7,7 +7,7 @@
   const status = $('estado-directorio');
   const stats = $('estadisticas');
   const dialog = $('acceso-dialogo');
-  let rows = [], session = null, generation = 0, pendingEmail = '';
+  let rows = [], session = null, generation = 0, pendingEmail = '', loaded = false;
   const normalize = (s) => String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
   const el = (tag, cls, value) => {
     const node = document.createElement(tag);
@@ -81,6 +81,7 @@
     return article;
   }
   function render() {
+    if (!loaded) return;
     const query = normalize($('buscar').value);
     const filter = $('filtro').value;
     const visible = rows.filter((r) => (filter === 'todos' || r.origen === filter || filter === 'mios' && r.soy_miembro)
@@ -103,7 +104,7 @@
     }
     status.textContent = `${visible.length} ${visible.length === 1 ? 'canal visible' : 'canales visibles'}. Integrantes inscritos, no personas conectadas ahora.`;
   }
-  function clear() { rows = []; list.replaceChildren(); stats.replaceChildren(); }
+  function clear() { loaded = false; rows = []; list.replaceChildren(); stats.replaceChildren(); }
   async function load() {
     const turn = ++generation;
     clear();
@@ -113,7 +114,7 @@
       const { data, error } = await db.rpc('plaza_dev_directorio');
       if (error || !Array.isArray(data)) throw error || new Error('Respuesta inválida');
       if (turn !== generation) return;
-      rows = data;
+      rows = data; loaded = true;
       for (const [value,label] of [[rows.filter(r=>r.origen==='oficial').length,'chats de Convergencia visibles'],[rows.filter(r=>r.origen==='usuarios').length,'canales de usuarios visibles'],[rows.filter(r=>r.soy_miembro).length,'canales a los que perteneces']]) {
         if (!session && label.includes('perteneces')) continue;
         const stat = el('div','directory-stat'); stat.append(el('strong','',String(value)),el('span','',label)); stats.append(stat);

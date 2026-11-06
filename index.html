@@ -185,8 +185,8 @@
     </div>
   </footer>
 
-  <!-- Sesión compartida de Convergencia Aura (cookie de .convergenciaaura.cl) y menú común del botón-logo.
-       El orden importa: supabase-js → aura-auth.js (crea window.auraClient) → aura-hub.js. -->
+  <!-- Misma identidad de Core, sesión persistente de Plaza y panel común.
+       Orden: SDK → cliente → panel y directorio. -->
   <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script defer src="js/plaza-client.js"></script>
   <script defer src="js/aura-hub-loader.js"></script>
