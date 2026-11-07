@@ -53,8 +53,8 @@ no representa presencia en línea ni autorizaciones aún no inscritas.
   incorpora exclusivamente para esta revisión. Se editan en la ficha, por el
   creador o moderación, siempre con acceso vigente. Ausencia de reglas se
   informa explícitamente y se enlazan las normas generales.
-- Los enlaces llevan a Messenger dev y explican qué sala seleccionar; Core
-  no dispone actualmente de una ruta de enlace directo por canal.
+- El nombre y el botón de cada canal abren `messenger.html?sala=slug` en Core dev.
+  Core resuelve el destino tras iniciar sesión y solo entre las salas accesibles.
 
 El acceso de Plaza usa la misma identidad Supabase de Core, con sesión propia
 persistente en el origen de Plaza. Esto permite probar en Netlify, donde las

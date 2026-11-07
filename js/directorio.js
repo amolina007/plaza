@@ -43,7 +43,9 @@
     const badges = el('div', 'directory-tags');
     badges.append(el('span', '', ({ publica: 'Público', privada: 'Privado · con acceso', restringida: 'Restringido · con acceso' })[row.tipo] || 'Con acceso'));
     if (row.soy_miembro) badges.append(el('span', '', 'Ya eres integrante'));
-    article.append(badges, el('h4', '', row.nombre), el('p', 'description', row.descripcion || 'Este canal todavía no tiene descripción.'));
+    const destination = `messenger.html?sala=${encodeURIComponent(row.slug)}`;
+    const title = el('h4'); title.append(link(row.nombre, destination));
+    article.append(badges, title, el('p', 'description', row.descripcion || 'Este canal todavía no tiene descripción.'));
     article.append(el('p', 'members', `${row.integrantes} ${Number(row.integrantes) === 1 ? 'integrante' : 'integrantes'}`));
     const details = el('details');
     details.append(el('summary', '', 'Reglas del canal'));
@@ -75,8 +77,7 @@
     }
     article.append(details);
     const actions = el('div', 'card-actions');
-    actions.append(link('Ir a Messenger', 'messenger.html', 'btn btn-primary'));
-    actions.append(el('small', 'muted', `Busca «${row.nombre}» en las salas.`));
+    actions.append(link('Abrir chat', destination, 'btn btn-primary'));
     article.append(actions);
     return article;
   }
