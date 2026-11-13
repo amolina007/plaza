@@ -70,3 +70,26 @@ la sesión compartida y la URL de Core. No basta con fusionar esta fase.
 Verificación: `sh build.sh`, compilación de JS, prueba real RPC como `anon`,
 y `tests/directorio-permisos.sql` (transacción con rollback; datos existentes
 se usan como contexto de prueba, ninguna edición de prueba queda guardada).
+
+## Favoritos, categorías y tema semanal (dev)
+
+`core.plaza_dev_explorar()` amplía el directorio existente sin duplicar salas.
+Los favoritos se guardan por identidad en `core.plaza_dev_favoritos`, son privados,
+no implican membresía y solo se muestran si la persona conserva acceso al canal.
+`plaza_dev_favorito` permite guardar/quitar de forma idempotente.
+
+`core.plaza_dev_editorial` guarda una categoría y un tema por canal. El creador o
+la moderación, con acceso vigente, los editan en «Administrar categoría y tema».
+La semana empieza el lunes a las 00:00 de America/Santiago. La consulta solo devuelve
+el tema de la semana vigente; vacío lo retira. No hay temas de ejemplo publicados.
+Las cuatro salas públicas se clasificaron según sus descripciones existentes;
+los canales restantes aparecen sin categoría hasta que su responsable la asigne.
+
+Las tablas nuevas tienen RLS y acceso directo revocado; las RPC comprueban cuenta,
+visibilidad y autoría. El conteo no revela los favoritos de otras personas.
+El cliente elimina los datos anteriores al cambiar de cuenta y descarta respuestas
+pendientes. Texto de categorías/temas se inserta con textContent, nunca como HTML.
+
+Pruebas: `node --test tests/directorio-model.test.mjs`; ejecutar
+`tests/explorar-permisos.sql` en una transacción (incluye rollback).
+No se modifican mensajes, membresías ni la API original del directorio.

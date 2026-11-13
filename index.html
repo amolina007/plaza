@@ -57,9 +57,10 @@
         <a class="brand" href="/" aria-label="Plaza Aura, inicio">Plaza Aura</a>
       </div>
       <nav class="nav-links" aria-label="Principal">
-        <a href="#canales">Canales</a>
+        <a href="#canales">Explorar</a>
+        <a href="#canales" data-view="favoritos">Favoritos</a>
         <a href="#tu-canal">Crea tu canal</a>
-        <a href="#entrar">Cómo entrar</a>
+        <a href="#canales" data-view="mios">Mis canales</a>
       </nav>
       <a class="btn btn-primary" href="https://core.convergenciaaura.cl/messenger.html">Entrar al chat</a>
     </div>
@@ -70,31 +71,41 @@
       <div class="wrap hero-inner">
         <div class="hero-copy">
           <p class="eyebrow">COMUNIDADES DE CONVERGENCIA</p>
-          <h1 id="titulo">Encuentra tu espacio para conversar.</h1>
-          <p class="lead">Explora los chats de Convergencia y los canales creados por su comunidad. Conoce su propósito, revisa sus reglas y participa.</p>
+          <h1 id="titulo">Una buena conversación empieza aquí.</h1>
+          <p class="lead">Encuentra tu comunidad en Convergencia. Descubre un tema, guarda tus canales y vuelve a conversar.</p>
           <div class="hero-actions"><a class="btn btn-primary" href="#canales">Explorar directorio</a><button class="btn btn-ghost" type="button" data-login>Ver mis canales</button></div>
         </div>
-        <aside class="panel directory-intro" aria-label="Acerca del directorio">
-          <span class="eyebrow">UN LUGAR PARA CADA CONVERSACIÓN</span>
-          <h2>Conoce la comunidad antes de entrar.</h2>
-          <p>Las descripciones y los integrantes se consultan directamente en Core.</p>
-          <p>Los canales privados y restringidos solo aparecen si tienes acceso. Las conversaciones personales no forman parte de este directorio.</p>
-          <a href="#entrar">Cómo participar →</a>
+        <aside class="panel directory-intro" aria-label="Tu próxima conversación">
+          <span class="eyebrow">TU PRÓXIMA CONVERSACIÓN</span>
+          <span class="conversation-symbol" aria-hidden="true">◌</span>
+          <h2>Un lugar para tus intereses.</h2>
+          <p>Explora por categoría y guarda los canales a los que te gustaría volver.</p>
+          <a class="btn btn-primary" href="#canales" data-view="favoritos">Ver mis favoritos →</a>
+          <small>Guardar un canal no te une a él ni cambia quién puede verlo.</small>
         </aside>
       </div>
     </section>
     <section class="section directory" id="canales" aria-labelledby="t-directorio">
       <div class="wrap">
-        <div class="directory-heading"><div><p class="eyebrow">EXPLORA Y CONECTA</p><h2 id="t-directorio">Directorio de canales</h2></div><button class="btn btn-ghost" id="actualizar" type="button">Actualizar</button></div>
+        <div class="directory-heading"><div><p class="eyebrow">EXPLORA Y CONECTA</p><h2 id="t-directorio">Conversaciones para sumarte</h2></div><button class="btn btn-ghost" id="actualizar" type="button">Actualizar</button></div>
         <p id="sesion-directorio" class="muted">Puedes explorar las salas públicas sin iniciar sesión.</p>
         <div id="estadisticas" class="directory-stats" aria-label="Resumen del directorio"></div>
         <div class="directory-filters">
-          <label>Buscar un canal<input id="buscar" type="search" placeholder="Nombre o descripción" maxlength="120"></label>
-          <label>Mostrar<select id="filtro"><option value="todos">Todos los canales visibles</option><option value="oficial">Chats de Convergencia</option><option value="usuarios">Creados por usuarios</option><option value="mios">Mis canales</option></select></label>
+          <label>Buscar un canal<input id="buscar" type="search" placeholder="¿De qué te gustaría conversar?" maxlength="120"></label>
+          <label>Mostrar<select id="filtro"><option value="todos">Todos los canales visibles</option><option value="oficial">Chats de Convergencia</option><option value="usuarios">Creados por usuarios</option><option value="mios">Mis canales</option><option value="favoritos">Mis favoritos</option></select></label>
           <label>Ordenar<select id="orden"><option value="nombre">Nombre A–Z</option><option value="integrantes">Más integrantes</option></select></label>
         </div>
+        <div id="categorias" class="category-chips" role="group" aria-label="Categorías"></div>
+        <p id="accion-directorio" role="status" aria-live="polite"></p>
         <p id="estado-directorio" role="status" aria-live="polite">Conectando con Core…</p>
-        <div id="lista-directorio" aria-busy="true"></div>
+        <div class="explore-layout">
+          <div id="lista-directorio" aria-busy="true"></div>
+          <aside class="explore-sidebar" aria-label="Novedades de tus canales">
+            <section class="panel"><p class="eyebrow">PARA ROMPER EL HIELO</p><h3>Tema de la semana</h3><div id="temas-semana"><p class="muted">Consultando los temas de los canales…</p></div></section>
+            <section class="panel"><h3>Tu plaza, a tu ritmo</h3><p>Usa el marcador de cada canal para tenerlo siempre a mano.</p><a href="#canales" data-view="favoritos">Ir a mis favoritos →</a></section>
+            <p class="privacy-note">Solo aparecen canales públicos o aquellos a los que tienes acceso. Tus favoritos son privados.</p>
+          </aside>
+        </div>
         <noscript><p>Activa JavaScript para consultar los canales actuales y sus integrantes. Puedes <a href="https://core.convergenciaaura.cl/messenger.html">abrir Messenger</a>.</p></noscript>
       </div>
     </section>
@@ -191,6 +202,7 @@
   <script defer src="js/plaza-client.js"></script>
   <script defer src="js/aura-hub-loader.js"></script>
   <script defer src="js/plaza-sesion.js"></script>
+  <script defer src="js/directorio-model.js"></script>
   <script defer src="js/directorio.js"></script>
 </body>
 </html>
