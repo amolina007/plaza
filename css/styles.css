@@ -281,3 +281,14 @@ body { background:radial-gradient(ellipse at 62% 0%,#123a54 0,transparent 48%),#
 .editorial-settings { font-size:.92rem; }
 @media(max-width:1000px) { .explore-layout { grid-template-columns:minmax(0,1fr); } .explore-sidebar { grid-template-columns:1fr 1fr; } .privacy-note { grid-column:1/-1; } .hero-inner { grid-template-columns:minmax(0,1fr); } .conversation-symbol { display:none; } }
 @media(max-width:700px) { .hero { padding-top:24px; } .hero-copy { padding:28px 22px; } .directory-filters,.explore-sidebar { grid-template-columns:1fr; } .directory-grid { grid-template-columns:1fr; } .category-chip { padding:8px 13px; } .directory-card { padding:18px; } }
+
+/* Cinco destinos persistentes en celular, con espacio para el área segura. */
+.mobile-ribbon { display:none; }
+@media (max-width:760px) {
+  body { padding-bottom:calc(76px + env(safe-area-inset-bottom, 0px)); }
+  .mobile-ribbon { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); position:fixed; inset:auto 0 0; z-index:100; padding:7px 6px calc(7px + env(safe-area-inset-bottom, 0px)); background:#09202e; border-top:1px solid var(--line); box-shadow:0 -8px 24px #0003; }
+  .mobile-ribbon a { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; min-height:48px; color:var(--text); text-decoration:none; font-size:11px; border-radius:10px; }
+  .mobile-ribbon a span { font-size:24px; line-height:26px; color:#44d6f4; }
+  .mobile-ribbon a:hover,.mobile-ribbon a:focus-visible { background:#174456; outline:2px solid #44d6f4; outline-offset:-2px; }
+  [data-globo-aura] { --globo-abajo:calc(76px + env(safe-area-inset-bottom, 0px)) !important; }
+}

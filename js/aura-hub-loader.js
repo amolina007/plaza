@@ -17,3 +17,14 @@
   if (!dev || window.AuraSiteProfile || document.querySelector('script[data-site-profile-core]')) return;
   const script=document.createElement('script');script.src='https://dev--convergencia-aura-core.netlify.app/js/aura-site-profile.js';script.dataset.site='plaza';script.dataset.siteProfileCore='';script.defer=true;document.head.append(script);
 })();
+
+/* Mensajería original de Core; reutiliza auraClient y deja libre la cinta móvil. */
+(() => {
+  if (window.__globoAuraCargado || document.querySelector('script[data-plaza-messenger]')) return;
+  const script = document.createElement('script');
+  script.src = `${window.PlazaConfig.core}/js/globo.js`;
+  script.dataset.plazaMessenger = '';
+  script.dataset.margenMovil = '92';
+  script.defer = true;
+  document.head.append(script);
+})();
