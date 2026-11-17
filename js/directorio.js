@@ -29,7 +29,7 @@
     return;
   }
   const db = client.schema('core');
-  document.querySelectorAll('a[href^="https://core.convergenciaaura.cl/"]').forEach((a) => {
+  document.querySelectorAll('a[href^="https://core.convergenciaaura.cl/"]:not([data-core-production])').forEach((a) => {
     a.href = a.href.replace('https://core.convergenciaaura.cl', config.core);
   });
   function openLogin() {
