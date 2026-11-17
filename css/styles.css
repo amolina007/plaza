@@ -292,3 +292,6 @@ body { background:radial-gradient(ellipse at 62% 0%,#123a54 0,transparent 48%),#
   .mobile-ribbon a:hover,.mobile-ribbon a:focus-visible { background:#174456; outline:2px solid #44d6f4; outline-offset:-2px; }
   [data-globo-aura] { --globo-abajo:calc(76px + env(safe-area-inset-bottom, 0px)) !important; }
 }
+
+/* Plaza usa su propio directorio: no mostrar el acceso Feed inyectado por Core. */
+[data-aura-feed-central] { display:none !important; }
