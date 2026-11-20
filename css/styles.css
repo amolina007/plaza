@@ -307,5 +307,16 @@ body { background:radial-gradient(ellipse at 62% 0%,#123a54 0,transparent 48%),#
 .profile-entry-tags small { color:var(--muted); }
 @media(max-width:700px) { .profile-entry-card { grid-template-columns:1fr; } }
 
+/* Vistas separadas: el desplazamiento queda dentro de la vista activa. */
+html,body { height:100%; overflow:hidden; }
+main { height:calc(100dvh - 64px); overflow-y:auto; overscroll-behavior:contain; }
+.view-panel[hidden] { display:none !important; }
+.feed-view-card { min-height:100%; display:flex; flex-direction:column; align-items:flex-start; justify-content:center; }
+.feed-view-card .section-lead { max-width:56ch; }
+@media(max-width:760px) {
+  body { padding-bottom:0; }
+  main { height:calc(100dvh - 64px - 76px - env(safe-area-inset-bottom, 0px)); }
+}
+
 /* El Feed ocupa el botón central de la cinta de Plaza. */
 [data-aura-feed-central] { display:none !important; }

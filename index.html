@@ -57,17 +57,18 @@
         <a class="brand" href="/" aria-label="Plaza Aura, inicio">Plaza Aura</a>
       </div>
       <nav class="nav-links" aria-label="Principal">
-        <a href="#canales">Explorar</a>
-        <a href="#canales" data-view="favoritos">Favoritos</a>
-        <a href="#tu-canal">Crea tu canal</a>
-        <a href="#canales" data-view="mios">Mis canales</a>
+        <a href="#inicio" data-seccion="inicio">Inicio</a>
+        <a href="#canales" data-seccion="explorar">Explorar</a>
+        <a href="#feed" data-seccion="feed">Feed</a>
+        <a href="#canales" data-seccion="mis-canales" data-view="mios">Mis canales</a>
+        <a href="#mi-perfil" data-seccion="mi-perfil">Mi perfil</a>
       </nav>
       <a class="btn btn-primary" data-core-production href="https://core.convergenciaaura.cl/messenger.html">Entrar al chat</a>
     </div>
   </header>
 
   <main id="inicio">
-    <section class="hero" aria-labelledby="titulo">
+    <section class="hero view-panel" data-vista-panel="inicio" aria-labelledby="titulo">
       <div class="wrap hero-inner">
         <div class="hero-copy">
           <p class="eyebrow">COMUNIDADES DE CONVERGENCIA</p>
@@ -85,7 +86,7 @@
         </aside>
       </div>
     </section>
-    <section class="section profile-entry" id="mi-perfil" aria-labelledby="t-mi-perfil">
+    <section class="section profile-entry view-panel" id="mi-perfil" data-vista-panel="mi-perfil" hidden aria-labelledby="t-mi-perfil">
       <div class="wrap">
         <div class="profile-entry-card">
           <div class="profile-entry-copy">
@@ -103,7 +104,7 @@
         </div>
       </div>
     </section>
-    <section class="section directory" id="canales" aria-labelledby="t-directorio">
+    <section class="section directory view-panel" id="canales" data-vista-panel="explorar" hidden aria-labelledby="t-directorio">
       <div class="wrap">
         <div class="directory-heading"><div><p class="eyebrow">EXPLORA Y CONECTA</p><h2 id="t-directorio">Conversaciones para sumarte</h2></div><button class="btn btn-ghost" id="actualizar" type="button">Actualizar</button></div>
         <p id="sesion-directorio" class="muted">Puedes explorar las salas públicas sin iniciar sesión.</p>
@@ -127,6 +128,14 @@
         <noscript><p>Activa JavaScript para consultar los canales actuales y sus integrantes. Puedes <a href="https://core.convergenciaaura.cl/messenger.html">abrir Messenger</a>.</p></noscript>
       </div>
     </section>
+    <section class="section feed-view view-panel" id="feed" data-vista-panel="feed" hidden aria-labelledby="t-feed">
+      <div class="wrap feed-view-card">
+        <p class="eyebrow">COMUNIDAD CONVERGENCIA</p>
+        <h2 id="t-feed">Feed</h2>
+        <p class="section-lead">Publicaciones y novedades de la comunidad, desde el Feed de Core.</p>
+        <a class="btn btn-primary" href="https://core.convergenciaaura.cl/feed.html">Abrir Feed de Convergencia →</a>
+      </div>
+    </section>
     <dialog id="acceso-dialogo" aria-labelledby="acceso-titulo">
       <form method="dialog" class="dialog-close"><button class="btn btn-ghost" aria-label="Cerrar">Cerrar ×</button></form>
       <h2 id="acceso-titulo">Tu cuenta de Convergencia</h2>
@@ -135,7 +144,7 @@
       <form id="acceso-codigo" hidden><label>Código del correo<input id="codigo" autocomplete="one-time-code" inputmode="numeric" required maxlength="10"></label><button class="btn btn-primary">Verificar código</button></form>
       <p id="acceso-estado" role="status"></p>
     </dialog>
-    <section class="section" id="tu-canal" aria-labelledby="t-tu">
+    <section class="section view-panel" id="tu-canal" data-vista-panel="inicio" hidden aria-labelledby="t-tu">
       <div class="wrap">
         <h2 id="t-tu">Crea tu propio canal</h2>
         <p class="section-lead">Cualquier persona con sesión puede abrir un canal para su grupo, su curso o su barrio. Hay tres niveles de privacidad según el tipo de sala.</p>
@@ -159,7 +168,7 @@
       </div>
     </section>
 
-    <section class="section" id="entrar" aria-labelledby="t-entrar">
+    <section class="section view-panel" id="entrar" data-vista-panel="inicio" hidden aria-labelledby="t-entrar">
       <div class="wrap">
         <h2 id="t-entrar">Cómo entrar</h2>
         <p class="section-lead">Tres pasos, sin contraseña.</p>
@@ -180,7 +189,7 @@
       </div>
     </section>
 
-    <section class="section faq" aria-labelledby="t-faq">
+    <section class="section faq view-panel" data-vista-panel="inicio" hidden aria-labelledby="t-faq">
       <div class="wrap">
         <h2 id="t-faq" style="margin-bottom:20px">Preguntas frecuentes</h2>
         <details>
@@ -215,11 +224,11 @@
   </footer>
 
   <nav class="mobile-ribbon" aria-label="Navegación móvil">
-    <a href="#inicio"><span aria-hidden="true">⌂</span>Inicio</a>
-    <a href="#canales" data-view="todos"><span aria-hidden="true">⌕</span>Explorar</a>
-    <a class="ribbon-feed" href="https://core.convergenciaaura.cl/feed.html"><span aria-hidden="true">▤</span>Feed</a>
-    <a href="#canales" data-view="mios"><span aria-hidden="true">☷</span>Mis canales</a>
-    <a href="#mi-perfil"><span aria-hidden="true">♙</span>Mi perfil</a>
+    <a href="#inicio" data-seccion="inicio"><span aria-hidden="true">⌂</span>Inicio</a>
+    <a href="#canales" data-seccion="explorar" data-view="todos"><span aria-hidden="true">⌕</span>Explorar</a>
+    <a class="ribbon-feed" href="#feed" data-seccion="feed"><span aria-hidden="true">▤</span>Feed</a>
+    <a href="#canales" data-seccion="mis-canales" data-view="mios"><span aria-hidden="true">☷</span>Mis canales</a>
+    <a href="#mi-perfil" data-seccion="mi-perfil"><span aria-hidden="true">♙</span>Mi perfil</a>
   </nav>
 
   <!-- Misma identidad de Core, sesión persistente de Plaza y panel común.
@@ -228,6 +237,7 @@
   <script defer src="js/plaza-client.js"></script>
   <script defer src="js/aura-hub-loader.js"></script>
   <script defer src="js/plaza-sesion.js"></script>
+  <script defer src="js/vistas.js"></script>
   <script defer src="js/directorio-model.js"></script>
   <script defer src="js/directorio.js"></script>
 </body>

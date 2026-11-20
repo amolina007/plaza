@@ -34,13 +34,14 @@
   });
   function openLogin() {
     if (session) {
-      $('filtro').value = 'mios'; render(); $('canales').scrollIntoView();
+      window.PlazaVistas?.mostrar('mis-canales', { actualizarHash: true }); $('filtro').value = 'mios'; render();
     } else if (!dialog.open) dialog.showModal();
   }
   window.PlazaLogin = openLogin;
   document.querySelectorAll('[data-login]').forEach((b) => b.addEventListener('click', openLogin));
 
   document.querySelectorAll('[data-view]').forEach(a => a.addEventListener('click', () => {
+    window.PlazaVistas?.mostrar(a.dataset.view === 'mios' ? 'mis-canales' : 'explorar', { actualizarHash: true });
     $('filtro').value = a.dataset.view; render();
   }));
   function categoryInfo(key) { return model.categories.find(c => c[0] === key) || model.categories.at(-1); }
