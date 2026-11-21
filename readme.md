@@ -93,3 +93,13 @@ pendientes. Texto de categorías/temas se inserta con textContent, nunca como HT
 Pruebas: `node --test tests/directorio-model.test.mjs`; ejecutar
 `tests/explorar-permisos.sql` en una transacción (incluye rollback).
 No se modifican mensajes, membresías ni la API original del directorio.
+
+### Resumen diario de actividad (dev)
+
+`core.plaza_dev_resumenes` guarda un cierre por fecha de Chile. El trabajo `plaza-dev-resumen-diario` corre cada hora al minuto 10: publica el día anterior a las 00:10 locales y reintenta sin duplicar. Recupera hasta siete cierres pendientes por ejecución. La fecha local y sus medianoches se calculan con `America/Santiago`, incluido horario de verano.
+
+El ranking considera hasta tres salas activas públicas, mensajes no retirados ni ocultos por reportes, participantes distintos que escribieron y la hora local con más mensajes. Empates de canal: participantes y luego ID estable; empate horario: primera hora. Los días sin mensajes tienen una publicación explícita sin ranking. No se retroceden días anteriores al primer cierre. No guarda textos ni identidades de autores. Si una sala deja de ser pública/activa, desaparece de la lectura de cierres anteriores.
+
+La tabla y los generadores no tienen acceso para `anon`/`authenticated`. Solo `core.plaza_dev_feed(p_limite)` devuelve publicaciones agregadas, máximo 100, aplicando disponibilidad y expulsiones actuales. Core dev incorpora esa RPC como fuente independiente `plaza`, sin cambiar las fuentes ni el Feed de producción. En este primer alcance las tarjetas automáticas no incluyen comentarios ni reacciones.
+
+Prueba transaccional: `tests/resumen-diario.sql` revierte todos sus fixtures. Comprueba top 3, cantidad de mensajes, participantes únicos, empate peak, límites de día, exclusión de privados/retirados/ocultos, cambio posterior a privado, día abierto, lectura anónima y permisos del generador. La copia de la migración aplicada tiene la versión real `20261121020023`.

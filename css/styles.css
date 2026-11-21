@@ -320,3 +320,9 @@ main { height:calc(100dvh - 64px); overflow-y:auto; overscroll-behavior:contain;
 
 /* El Feed ocupa el botón central de la cinta de Plaza. */
 [data-aura-feed-central] { display:none !important; }
+
+.daily-posts { display:grid; gap:20px; width:100%; margin:20px 0; }
+.daily-post { display:grid; gap:14px; }
+.daily-post p { white-space:pre-line; line-height:1.7; overflow-wrap:anywhere; }
+.daily-post time { color:var(--muted); font-size:.85rem; }
+.feed-view-card { justify-content:flex-start; padding-bottom:30px; }
