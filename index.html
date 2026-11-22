@@ -106,7 +106,7 @@
     </section>
     <section class="section directory view-panel" id="canales" data-vista-panel="explorar" hidden aria-labelledby="t-directorio">
       <div class="wrap">
-        <div class="directory-heading"><div><p class="eyebrow">EXPLORA Y CONECTA</p><h2 id="t-directorio">Conversaciones para sumarte</h2></div><button class="btn btn-ghost" id="actualizar" type="button">Actualizar</button></div>
+        <div class="directory-heading"><div><p class="eyebrow">EXPLORA Y CONECTA</p><h2 id="t-directorio">Explorar salas</h2></div><a class="btn btn-primary" href="#crear-sala" data-seccion="crear-sala">＋ Crear una sala</a><button class="btn btn-ghost" id="actualizar" type="button">Actualizar</button></div>
         <p id="sesion-directorio" class="muted">Puedes explorar las salas públicas sin iniciar sesión.</p>
         <div id="estadisticas" class="directory-stats" aria-label="Resumen del directorio"></div>
         <div class="directory-filters">
@@ -139,6 +139,32 @@
         <a class="btn btn-primary" href="https://core.convergenciaaura.cl/feed.html">Abrir Feed de Convergencia →</a>
       </div>
     </section>
+    <section class="section view-panel room-screen" id="crear-sala" data-vista-panel="crear-sala" hidden aria-labelledby="crear-sala-titulo">
+      <div class="wrap room-wrap">
+        <a href="#canales" data-seccion="explorar">← Explorar salas</a>
+        <h2 id="crear-sala-titulo">Crear sala</h2>
+        <p>Inicia tu comunidad. Serás su primer moderador y podrás nombrar a otros integrantes.</p>
+        <form id="crear-sala-form" class="panel room-form">
+          <label>Nombre<input name="nombre" minlength="3" maxlength="30" required placeholder="Ej. Club de lectura"></label>
+          <label>Propósito<textarea name="proposito" minlength="3" maxlength="200" required placeholder="¿Para qué se reúne esta comunidad?"></textarea></label>
+          <label>Categoría<select name="categoria" required></select></label>
+          <label>Reglas<textarea name="reglas" minlength="3" maxlength="5000" rows="5" required placeholder="Escribe las reglas principales de la sala"></textarea></label>
+          <label>Acceso a la sala<select name="ingreso"><option value="abierta">Abierta · cualquier cuenta puede unirse</option><option value="aprobacion">Con aprobación · revisas las solicitudes</option><option value="invitacion">Por invitación · solo las cuentas invitadas</option></select></label>
+          <p class="muted">El catálogo muestra el propósito y las reglas de las salas abiertas o con aprobación. Las conversaciones solo se abren a sus integrantes. Las salas por invitación no se anuncian al público.</p>
+          <button class="btn btn-primary" type="submit">Crear sala</button>
+        </form>
+        <p id="crear-sala-estado" role="status"></p>
+      </div>
+    </section>
+    <section class="section view-panel room-screen" id="sala" data-vista-panel="sala" hidden aria-labelledby="sala-titulo">
+      <div class="wrap room-wrap"><a href="#canales" data-seccion="explorar">← Explorar salas</a><h2 id="sala-titulo">Antes de entrar</h2><div id="sala-detalle"></div><p id="sala-estado" role="status"></p></div>
+    </section>
+    <section class="section view-panel room-screen" id="moderacion" data-vista-panel="moderacion" hidden aria-labelledby="moderacion-titulo">
+      <div class="wrap room-wrap"><button class="btn btn-ghost" id="moderacion-volver" type="button">← Ver sala</button><h2 id="moderacion-titulo">Moderación</h2><div id="moderacion-panel"></div><p id="moderacion-estado" role="status"></p></div>
+    </section>
+    <dialog id="decision-dialogo" aria-labelledby="decision-titulo">
+      <h2 id="decision-titulo">Decisión de moderación</h2><form id="decision-form"><label>Motivo<textarea name="motivo" minlength="3" maxlength="500" required rows="4"></textarea></label><div class="card-actions"><button class="btn btn-primary" type="submit">Confirmar</button><button class="btn btn-ghost" id="decision-cancelar" type="button">Cancelar</button></div><p id="decision-estado" role="status"></p></form>
+    </dialog>
     <dialog id="acceso-dialogo" aria-labelledby="acceso-titulo">
       <form method="dialog" class="dialog-close"><button class="btn btn-ghost" aria-label="Cerrar">Cerrar ×</button></form>
       <h2 id="acceso-titulo">Tu cuenta de Convergencia</h2>
@@ -167,7 +193,7 @@
             <span class="tag">Lo configura el equipo de Aura</span>
           </div>
         </div>
-        <div class="cta-row"><a class="btn btn-primary" href="https://core.convergenciaaura.cl/chats.html">Entrar y crear mi canal</a></div>
+        <div class="cta-row"><a class="btn btn-primary" href="#crear-sala" data-seccion="crear-sala">Crear mi sala</a></div>
       </div>
     </section>
 
@@ -244,5 +270,6 @@
   <script defer src="js/directorio-model.js"></script>
   <script defer src="js/directorio.js"></script>
   <script defer src="js/resumen-diario.js"></script>
+  <script defer src="js/salas.js"></script>
 </body>
 </html>

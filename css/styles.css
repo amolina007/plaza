@@ -326,3 +326,25 @@ main { height:calc(100dvh - 64px); overflow-y:auto; overscroll-behavior:contain;
 .daily-post p { white-space:pre-line; line-height:1.7; overflow-wrap:anywhere; }
 .daily-post time { color:var(--muted); font-size:.85rem; }
 .feed-view-card { justify-content:flex-start; padding-bottom:30px; }
+
+/* Salas: explorar, antes de entrar, crear y moderar son pantallas independientes. */
+.room-wrap { max-width:900px; display:grid; gap:22px; padding-bottom:36px; }
+.room-wrap > h2 { margin:0; }
+.room-form,.room-summary,.room-rules { display:grid; gap:18px; }
+.room-form label { display:grid; gap:8px; font-weight:600; }
+.room-form input,.room-form textarea,.room-form select { width:100%; font:inherit; padding:12px; border:1px solid #547589; border-radius:10px; color:var(--ice); background:#09202e; }
+.room-form .room-checkbox { display:flex; align-items:center; }
+.room-checkbox input { width:22px; height:22px; flex:0 0 22px; }
+.room-summary h3 { font-size:1.7rem; }
+.room-rules p { white-space:pre-wrap; overflow-wrap:anywhere; }
+.room-tabs { display:flex; flex-wrap:wrap; gap:8px; margin:18px 0; }
+.room-tabs [aria-pressed=true] { background:var(--cyan);color:#062331; }
+.room-person { display:grid; gap:12px; margin:16px 0; }
+.room-person h4,.room-person p { margin:0; overflow-wrap:anywhere; }
+.room-moderators { color:#8be8f7; }
+#sala-detalle { display:grid; gap:20px; }
+#sala-detalle > .btn { justify-self:start; }
+.card-actions { flex-wrap:wrap; }
+.room-notices { display:grid;gap:10px;border-left:3px solid var(--cyan);padding-left:14px; }
+.mobile-ribbon a[aria-current=page]:not(.ribbon-feed) { background:#174456; color:#8be8f7; }
+@media(max-width:700px){.directory-heading { flex-wrap:wrap;gap:12px; }.room-form,.room-summary,.room-rules { padding:20px; }.room-tabs .btn { padding:9px;font-size:.85rem; }}

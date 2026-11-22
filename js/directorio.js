@@ -111,20 +111,22 @@
     const badges = el('div', 'directory-tags');
     badges.append(el('span', '', ({ publica: 'Público', privada: 'Privado · con acceso', restringida: 'Restringido · con acceso' })[row.tipo] || 'Con acceso'));
     badges.append(el('span','category-label',info[1]));
+    if(row.gestionada) badges.firstChild.textContent=({abierta:'Ingreso abierto',aprobacion:'Con aprobación',invitacion:'Por invitación'})[row.ingreso];
     if (row.soy_miembro) badges.append(el('span', '', 'Ya eres integrante'));
     const destination = `chats.html?sala=${encodeURIComponent(row.slug)}`;
-    const title = el('h4'); title.append(link(row.nombre, destination));
+    const title = el('h4'); const roomTitle=link(row.nombre,destination); if(row.gestionada)roomTitle.addEventListener('click',e=>{e.preventDefault();window.PlazaSalas?.abrir(row);}); title.append(roomTitle);
     article.append(badges, title, el('p', 'description', row.descripcion || 'Este canal todavía no tiene descripción.'));
     article.append(el('p', 'members', `${row.integrantes} ${Number(row.integrantes) === 1 ? 'integrante' : 'integrantes'}`));
     const topic=el('div','weekly-topic');
     topic.append(el('small','eyebrow','TEMA DE LA SEMANA'),el('p','',row.tema||'Todavía no hay un tema publicado esta semana.'));
     if(row.tema_hasta)topic.append(el('small','muted',`Hasta el ${row.tema_hasta.split('-').reverse().join('/')} · hora de Chile`));
+    if(row.gestionada) article.append(el('p','room-moderators',`Moderación: ${(row.moderadores||[]).map(m=>m.alias).join(', ') || 'Responsables de la sala'}`));
     article.append(topic);
     const details = el('details');
     details.append(el('summary', '', 'Reglas del canal'));
     const rules = el('p', 'rules', row.reglas || 'Este canal todavía no ha publicado reglas propias.');
     details.append(rules, link('Consultar normas generales de Convergencia', 'normas-chats.html'));
-    if (row.puede_editar) {
+    if (row.puede_editar && !row.gestionada) {
       const form = el('form');
       const label = el('label', '', 'Editar reglas de este canal');
       const input = el('textarea'); input.rows = 5; input.maxLength = 5000; input.value = row.reglas || '';
@@ -149,9 +151,11 @@
       details.append(form);
     }
     article.append(details);
-    if(row.puede_editar)article.append(editorialForm(row));
+    if(row.puede_editar && !row.gestionada)article.append(editorialForm(row));
     const actions = el('div', 'card-actions');
-    actions.append(link('Abrir chat →', destination, 'btn btn-primary'),favoriteButton(row));
+    const ver=el('button','btn btn-primary','Ver sala →');ver.type='button';ver.addEventListener('click',()=>window.PlazaSalas?.abrir(row));
+    actions.append(ver,favoriteButton(row));
+    if(row.gestionada && row.puede_editar){const gestionar=el('button','btn btn-ghost','Moderar');gestionar.type='button';gestionar.addEventListener('click',()=>window.PlazaSalas?.moderar(row));actions.append(gestionar);}
     article.append(actions);
     return article;
   }
@@ -184,7 +188,7 @@
     status.textContent = 'Consultando los canales de Core…';
     list.setAttribute('aria-busy','true'); $('actualizar').disabled = true;
     try {
-      const { data, error } = await db.rpc('plaza_dev_explorar');
+      const { data, error } = await db.rpc('plaza_dev_catalogo');
       if (error || !Array.isArray(data)) throw error || new Error('Respuesta inválida');
       if (turn !== generation) return;
       rows = data; loaded = true;
@@ -201,6 +205,9 @@
   }
   ['buscar','filtro','orden'].forEach((id) => $(id).addEventListener(id === 'buscar' ? 'input' : 'change', render));
   $('actualizar').addEventListener('click',load);
+  window.addEventListener('plaza:salas-cambio',load);
+  window.addEventListener('plaza:mis-salas',()=>{$('filtro').value='mios';render();});
+  window.addEventListener('plaza:explorar',()=>{$('filtro').value='todos';render();});
   let identity;
   function changed(next) {
     const nextId = next?.user?.id || null;
