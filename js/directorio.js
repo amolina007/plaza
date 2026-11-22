@@ -133,6 +133,7 @@
     const article=el('article','directory-card compact-room');article.dataset.category=row.categoria;
     const info=categoryInfo(row.categoria),badges=el('div','directory-tags');
     badges.append(el('span','category-label',info[1]),el('span','',row.gestionada?({abierta:'Abierta',aprobacion:'Con aprobación',invitacion:'Por invitación'})[row.ingreso]:row.tipo==='publica'?'Pública':'Con acceso'));
+    if($('filtro').value==='mios')badges.append(el('span','membership-role',row.puede_editar?'Moderador':'Integrante'));
     const title=el('h4'),name=el('button','room-title-button',row.nombre);name.type='button';name.addEventListener('click',()=>window.PlazaSalas?.abrir(row));title.append(name);
     article.append(badges,title,el('p','description',row.descripcion||'Sin propósito publicado todavía.'));
     article.append(el('p','members',`${row.integrantes} ${Number(row.integrantes)===1?'integrante':'integrantes'}`));
@@ -162,14 +163,15 @@
     const visible=model.filter(rows,{query,view:filter,category,order:$('orden').value});
     paintCategories();
     list.replaceChildren();
-    for (const [kind, title] of [['oficial','Chats de Convergencia'],['usuarios','Canales creados por usuarios']]) {
+    const groups=filter==='mios'?[['modero','Canales que modero'],['pertenezco','Canales a los que pertenezco']]:[['oficial','Chats de Convergencia'],['usuarios','Canales creados por usuarios']];
+    for (const [kind, title] of groups) {
       if (['oficial','usuarios'].includes(filter) && filter !== kind) continue;
-      const subset = visible.filter((r) => r.origen === kind);
+      const subset = visible.filter(r=>filter==='mios'?(kind==='modero'?Boolean(r.puede_editar):!r.puede_editar):r.origen===kind);
       const section = el('section', 'directory-group');
       section.append(el('h3', '', `${title} · ${subset.length}`));
       const grid = el('div', 'directory-grid');
       subset.forEach((r) => grid.append(card(r)));
-      if (!subset.length) section.append(el('p', 'directory-empty', filter === 'favoritos' ? (session ? 'Todavía no tienes favoritos en esta selección. Usa el marcador para guardar un canal.' : 'Inicia sesión para consultar y guardar tus favoritos.') : query || filter === 'mios' || category !== 'todos'
+      if (!subset.length) section.append(el('p', 'directory-empty', filter==='mios'?(!session?'Inicia sesión para ver los canales a los que perteneces.':query||category!=='todos'?'No hay canales de este grupo que coincidan con los filtros.':kind==='modero'?'Todavía no moderas ningún canal al que pertenezcas.':'Todavía no perteneces a otros canales. Explora una sala para unirte.'):filter === 'favoritos' ? (session ? 'Todavía no tienes favoritos en esta selección. Usa el marcador para guardar un canal.' : 'Inicia sesión para consultar y guardar tus favoritos.') : query || filter === 'mios' || category !== 'todos'
         ? 'No hay canales que coincidan con esta selección.'
         : kind === 'usuarios' ? 'No hay canales de usuarios visibles para ti. Los privados solo aparecen cuando tienes acceso.' : 'No hay chats oficiales visibles para ti.'));
       else section.append(grid);
