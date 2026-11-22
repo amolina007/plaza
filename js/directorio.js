@@ -56,15 +56,6 @@
       box.append(button);
     }
   }
-  function paintTopics() {
-    const box=$('temas-semana'); box.replaceChildren();
-    const topics=rows.filter(r=>r.tema);
-    if (!topics.length) box.append(el('p','muted','Los responsables de los canales todavía no han publicado un tema para esta semana.'));
-    topics.forEach(r=>{
-      const item=el('div','sidebar-topic');
-      item.append(el('small','',r.nombre),el('p','',r.tema),link('Conversar →',`chats.html?sala=${encodeURIComponent(r.slug)}`));box.append(item);
-    });
-  }
   function favoriteButton(row) {
     const button=el('button','favorite-button',row.favorito?'★':'☆'); button.type='button';
     button.dataset.favorite=row.id;
@@ -103,25 +94,8 @@
       finally{save.disabled=false;}
     });details.append(form);return details;
   }
-  function card(row) {
-    const article = el('article', 'directory-card');
-    article.dataset.category=row.categoria;
-    const info=categoryInfo(row.categoria);
-    const artwork=el('div','channel-art',info[2]);artwork.setAttribute('aria-hidden','true');article.append(artwork);
-    const badges = el('div', 'directory-tags');
-    badges.append(el('span', '', ({ publica: 'Público', privada: 'Privado · con acceso', restringida: 'Restringido · con acceso' })[row.tipo] || 'Con acceso'));
-    badges.append(el('span','category-label',info[1]));
-    if(row.gestionada) badges.firstChild.textContent=({abierta:'Ingreso abierto',aprobacion:'Con aprobación',invitacion:'Por invitación'})[row.ingreso];
-    if (row.soy_miembro) badges.append(el('span', '', 'Ya eres integrante'));
-    const destination = `chats.html?sala=${encodeURIComponent(row.slug)}`;
-    const title = el('h4'); const roomTitle=link(row.nombre,destination); if(row.gestionada)roomTitle.addEventListener('click',e=>{e.preventDefault();window.PlazaSalas?.abrir(row);}); title.append(roomTitle);
-    article.append(badges, title, el('p', 'description', row.descripcion || 'Este canal todavía no tiene descripción.'));
-    article.append(el('p', 'members', `${row.integrantes} ${Number(row.integrantes) === 1 ? 'integrante' : 'integrantes'}`));
-    const topic=el('div','weekly-topic');
-    topic.append(el('small','eyebrow','TEMA DE LA SEMANA'),el('p','',row.tema||'Todavía no hay un tema publicado esta semana.'));
-    if(row.tema_hasta)topic.append(el('small','muted',`Hasta el ${row.tema_hasta.split('-').reverse().join('/')} · hora de Chile`));
-    if(row.gestionada) article.append(el('p','room-moderators',`Moderación: ${(row.moderadores||[]).map(m=>m.alias).join(', ') || 'Responsables de la sala'}`));
-    article.append(topic);
+  function roomSettings(row) {
+    const section=el('section','panel');
     const details = el('details');
     details.append(el('summary', '', 'Reglas del canal'));
     const rules = el('p', 'rules', row.reglas || 'Este canal todavía no ha publicado reglas propias.');
@@ -150,21 +124,43 @@
       });
       details.append(form);
     }
-    article.append(details);
-    if(row.puede_editar && !row.gestionada)article.append(editorialForm(row));
-    const actions = el('div', 'card-actions');
-    const ver=el('button','btn btn-primary','Ver sala →');ver.type='button';ver.addEventListener('click',()=>window.PlazaSalas?.abrir(row));
-    actions.append(ver,favoriteButton(row));
-    if(row.gestionada && row.puede_editar){const gestionar=el('button','btn btn-ghost','Moderar');gestionar.type='button';gestionar.addEventListener('click',()=>window.PlazaSalas?.moderar(row));actions.append(gestionar);}
-    article.append(actions);
-    return article;
+    section.append(details);
+    if(row.puede_editar && !row.gestionada)section.append(editorialForm(row));
+    return section;
+  }
+  window.PlazaRoomSettings=roomSettings;
+  function card(row) {
+    const article=el('article','directory-card compact-room');article.dataset.category=row.categoria;
+    const info=categoryInfo(row.categoria),badges=el('div','directory-tags');
+    badges.append(el('span','category-label',info[1]),el('span','',row.gestionada?({abierta:'Abierta',aprobacion:'Con aprobación',invitacion:'Por invitación'})[row.ingreso]:row.tipo==='publica'?'Pública':'Con acceso'));
+    const title=el('h4'),name=el('button','room-title-button',row.nombre);name.type='button';name.addEventListener('click',()=>window.PlazaSalas?.abrir(row));title.append(name);
+    article.append(badges,title,el('p','description',row.descripcion||'Sin propósito publicado todavía.'));
+    article.append(el('p','members',`${row.integrantes} ${Number(row.integrantes)===1?'integrante':'integrantes'}`));
+    const activity=el('div','room-activity');
+    if(row.actividad_visible){
+      const activos=Number(row.activos_7d)||0;
+      activity.append(el('p','',`${activos} ${activos===1?'participante activo':'participantes activos'} · últimos 7 días`));
+      if(row.ultimo_mensaje){const date=new Date(row.ultimo_mensaje);const time=el('time','',`Último mensaje: ${date.toLocaleString('es-CL',{timeZone:'America/Santiago',day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})}`);time.dateTime=row.ultimo_mensaje;activity.append(time);}
+      else activity.append(el('small','','Sin mensajes publicados.'));
+    }else activity.append(el('p','','Actividad visible al ingresar.'));
+    article.append(activity);
+    const mods=(row.moderadores||[]).map(m=>m.alias).join(', ');
+    const moderacion=el('p','room-moderators',`Moderación: ${mods|| (row.origen==='oficial'?'equipo Core':'administración del canal')}`);moderacion.title=moderacion.textContent;article.append(moderacion);
+    const actions=el('div','card-actions'),state=model.action(row);
+    let primary;
+    if(state.kind==='chat')primary=link('Abrir chat →',`chats.html?sala=${encodeURIComponent(row.slug)}`,'btn btn-primary');
+    else {primary=el('button','btn btn-primary',state.label);primary.type='button';primary.disabled=state.kind==='pendiente';primary.addEventListener('click',()=>window.PlazaSalas?.abrir(row));}
+    actions.append(primary,favoriteButton(row));
+    const more=el('button','btn btn-ghost room-details-button','Ver sala y reglas');more.type='button';more.addEventListener('click',()=>window.PlazaSalas?.abrir(row));actions.append(more);
+    if(row.gestionada&&row.puede_editar){const manage=el('button','btn btn-ghost','Moderar');manage.type='button';manage.addEventListener('click',()=>window.PlazaSalas?.moderar(row));actions.append(manage);}
+    article.append(actions);return article;
   }
   function render() {
     if (!loaded) return;
     const query = $('buscar').value;
     const filter = $('filtro').value;
     const visible=model.filter(rows,{query,view:filter,category,order:$('orden').value});
-    paintCategories();paintTopics();
+    paintCategories();
     list.replaceChildren();
     for (const [kind, title] of [['oficial','Chats de Convergencia'],['usuarios','Canales creados por usuarios']]) {
       if (['oficial','usuarios'].includes(filter) && filter !== kind) continue;
@@ -179,16 +175,16 @@
       else section.append(grid);
       list.append(section);
     }
-    status.textContent = `${visible.length} ${visible.length === 1 ? 'canal visible' : 'canales visibles'}. Integrantes inscritos, no personas conectadas ahora.`;
+    status.textContent = `${visible.length} ${visible.length === 1 ? 'canal visible' : 'canales visibles'}. Actividad: personas que escribieron en los últimos 7 días; no indica quién está conectado. Horas de Chile.`;
   }
-  function clear() { loaded = false; rows = []; list.replaceChildren(); stats.replaceChildren(); $('categorias').replaceChildren(); $('temas-semana').replaceChildren(); announce(''); }
+  function clear() { loaded = false; rows = []; list.replaceChildren(); stats.replaceChildren(); $('categorias').replaceChildren(); announce(''); }
   async function load() {
     const turn = ++generation;
     clear();
     status.textContent = 'Consultando los canales de Core…';
     list.setAttribute('aria-busy','true'); $('actualizar').disabled = true;
     try {
-      const { data, error } = await db.rpc('plaza_dev_catalogo');
+      const { data, error } = await db.rpc('plaza_dev_explorar_actividad');
       if (error || !Array.isArray(data)) throw error || new Error('Respuesta inválida');
       if (turn !== generation) return;
       rows = data; loaded = true;
@@ -200,7 +196,7 @@
       render();
     } catch (_) {
       if (turn !== generation) return;
-      clear(); $('temas-semana').textContent='No se pudieron consultar los temas.'; status.textContent = 'No pudimos consultar el directorio. Revisa tu conexión o tu acceso y pulsa Actualizar para volver a intentar.';
+      clear(); status.textContent = 'No pudimos consultar el directorio. Revisa tu conexión o tu acceso y pulsa Actualizar para volver a intentar.';
     } finally { if(turn === generation) { list.setAttribute('aria-busy','false'); $('actualizar').disabled = false; } }
   }
   ['buscar','filtro','orden'].forEach((id) => $(id).addEventListener(id === 'buscar' ? 'input' : 'change', render));

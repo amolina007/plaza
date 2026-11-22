@@ -115,3 +115,13 @@ Las RPC aplican sesión activa, controles de privacidad de Core y autorización 
 Core dev muestra reglas, moderadores y avisos personales en Messenger. Las advertencias de Plaza son informativas; no activan la antigua regla global de tres amonestaciones. El panel de moderación se abre en Plaza. Las rutas raíz siguen siendo Inicio, Explorar, Feed, Mis salas y Mi perfil; crear/detalle/moderar son pantallas independientes, no secciones apiladas. El perfil ampliado sigue pendiente del trabajo descrito en su sección.
 
 `tests/salas-moderadas.sql` ejecuta creación, solicitud, aprobación, ingreso abierto, invitación, co-moderación, cambio de reglas, silencio y expulsión con tres identidades reales elegibles, dentro de una transacción con rollback. No deja salas, mensajes, miembros, decisiones ni solicitudes de prueba. Comprueba que abrir por nombre y llamar al envío de Core no permite saltarse los controles.
+
+### Explorar compacto y actividad (dev)
+
+`core.plaza_dev_explorar_actividad()` añade actividad real al catálogo existente. Los activos son autores distintos de mensajes no retirados ni ocultos durante los últimos siete días móviles; no son personas conectadas. Se excluyen fechas futuras. La fecha del último mensaje abarca todo el historial válido y se presenta en horario de Chile. Los conteos usan la ventana de siete días y la última fecha usa una búsqueda ordenada con límite 1 sobre el índice de sala/fecha existente.
+
+La actividad de salas públicas es agregada y visible en el catálogo. Para salas restringidas/privadas, incluidas las nuevas anunciadas con aprobación, solo se devuelve si Core ya autoriza acceso: hasta entonces se devuelve null y la interfaz dice «Actividad visible al ingresar». Una sala sin mensajes devuelve cero activos y ninguna fecha. La actualización usa el botón Actualizar o vuelve a cargar tras cambios de ingreso; no es presencia en tiempo real.
+
+Tarjetas sin portada ni reglas/formularios completos: categoría, acceso, propósito breve, integrantes, actividad y moderación. Botón contextual: Unirme, Solicitar ingreso, Solicitud pendiente (deshabilitado), Abrir chat o Ver sala. Aceptar una invitación pasa por las reglas. Las salas públicas originales también permiten unirse desde la ficha mediante `core.unirme_a_sala`. Reglas, edición del propietario y tema semanal se muestran en la ficha independiente. No se cambian las cinco vistas ni sus controles de acceso.
+
+Pruebas: `tests/directorio-model.test.mjs` cubre filtros y estados de botones. `tests/explorar-actividad.sql` revierte sus fixtures y cubre autores únicos, ventana temporal, exclusión de mensajes ocultos/retirados/futuros, estado sin mensajes, catálogo anónimo, privacidad previa a aprobación y actividad posterior al ingreso.

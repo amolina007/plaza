@@ -13,5 +13,13 @@
       && normalize(`${r.nombre} ${r.descripcion||''} ${r.tema||''}`).includes(normalize(query)))
       .sort((a,b)=>(order==='integrantes'?Number(b.integrantes)-Number(a.integrantes):0)||a.nombre.localeCompare(b.nombre,'es'));
   }
-  window.PlazaDirectory = Object.freeze({categories,filter});
+  function action(row) {
+    if(row.soy_miembro || row.puede_entrar && (row.gestionada || row.tipo!=='publica')) return {label:'Abrir chat',kind:'chat'};
+    if(row.solicitud==='pendiente') return {label:'Solicitud pendiente',kind:'pendiente'};
+    if(row.solicitud==='invitada') return {label:'Unirme',kind:'ingreso'};
+    if(row.gestionada && row.ingreso==='aprobacion') return {label:'Solicitar ingreso',kind:'ingreso'};
+    if(row.ingreso==='abierta' || !row.gestionada && row.tipo==='publica') return {label:'Unirme',kind:'ingreso'};
+    return {label:'Ver sala',kind:'detalle'};
+  }
+  window.PlazaDirectory = Object.freeze({categories,filter,action});
 })();

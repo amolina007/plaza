@@ -348,3 +348,23 @@ main { height:calc(100dvh - 64px); overflow-y:auto; overscroll-behavior:contain;
 .room-notices { display:grid;gap:10px;border-left:3px solid var(--cyan);padding-left:14px; }
 .mobile-ribbon a[aria-current=page]:not(.ribbon-feed) { background:#174456; color:#8be8f7; }
 @media(max-width:700px){.directory-heading { flex-wrap:wrap;gap:12px; }.room-form,.room-summary,.room-rules { padding:20px; }.room-tabs .btn { padding:9px;font-size:.85rem; }}
+
+/* Explorar: tarjetas compactas y un siguiente paso claro por sala. */
+.explore-layout { display:block; }
+.directory-card.compact-room { gap:10px; padding:18px; }
+.compact-room h4,.compact-room p { margin:0; }
+.compact-room .description { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; min-height:2.8em; }
+.room-title-button { padding:0; border:0; background:none; color:var(--ice); font:inherit; text-align:left; cursor:pointer; }
+.room-title-button:hover { color:var(--cyan); }
+.room-title-button:focus-visible { outline:2px solid var(--cyan); outline-offset:4px; border-radius:4px; }
+.compact-room .directory-tags { gap:6px; font-size:.75rem; }
+.compact-room .members { font-size:.85rem; color:var(--muted); }
+.room-activity { display:grid; gap:4px; padding:10px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); font-size:.85rem; }
+.room-activity time,.room-activity small { color:var(--muted); font-size:.78rem; }
+.compact-room .room-moderators { font-size:.8rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.compact-room .card-actions { gap:8px; margin-top:auto; }
+.compact-room .btn { min-height:44px; padding:9px 12px; font-size:.85rem; }
+.compact-room .favorite-button { width:44px;height:44px;font-size:1.5rem; }
+.compact-room .room-details-button { width:100%; background:transparent; border-color:transparent; text-align:left; justify-content:flex-start; }
+.compact-room .btn:disabled { cursor:default; opacity:.75; }
+@media(min-width:1100px){ .directory-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } }
