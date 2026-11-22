@@ -11,6 +11,16 @@ begin
  set local role authenticated;
  sid:=core.plaza_dev_sala_crear('Prueba'||substr(replace(gen_random_uuid()::text,'-',''),1,12),'Comprobar salas reales','Respetar a todos','lectura','aprobacion');
  invitada:=core.plaza_dev_sala_crear('Invita'||substr(replace(gen_random_uuid()::text,'-',''),1,12),'Comprobar invitaciones','Respetar a todos','lectura','invitacion');
+ perform set_config('request.jwt.claim.sub','',true);
+ perform set_config('request.jwt.claims','{}',true);
+ set local role anon;
+ if exists(select 1 from jsonb_array_elements(core.plaza_dev_catalogo()) x where x->>'id'=invitada::text) then raise exception 'Catálogo anónimo expone invitación'; end if;
+ if not exists(select 1 from jsonb_array_elements(core.plaza_dev_catalogo()) x where x->>'id'=sid::text) then raise exception 'Sala anunciada no visible'; end if;
+ begin perform core.plaza_dev_panel(sid); raise exception 'Anónimo consultó panel'; exception when insufficient_privilege then null; end;
+ reset role;
+ set local role authenticated;
+ perform set_config('request.jwt.claim.sub',a::text,true);
+ perform set_config('request.jwt.claims',jsonb_build_object('sub',a,'role','authenticated')::text,true);
  if not core.plaza_dev_mod(sid) or not core.puedo_ver_sala(sid) then raise exception 'Creador sin acceso/moderación'; end if;
  select x->>'slug' into slug_sala from jsonb_array_elements(core.plaza_dev_catalogo()) x where x->>'id'=sid::text;
  perform set_config('request.jwt.claim.sub',b::text,true);

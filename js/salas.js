@@ -26,7 +26,7 @@
   async function recargarFila(id){const rows=await rpc('plaza_dev_catalogo');return rows.find(r=>r.id===id);}
   function abrir(row){
     sala=row;const turn=version;visible('sala');status('sala-estado','');const box=$('sala-detalle');box.replaceChildren();
-    const cab=node('div','','panel room-summary');cab.append(node('h3',row.nombre),node('p',row.descripcion||'Esta sala todavía no tiene propósito publicado.'),node('span',row.gestionada?modos[row.ingreso]:row.tipo==='publica'?'Sala pública':'Sala con acceso','tag'),node('p',`${row.integrantes} integrantes`));
+    const cab=node('div','','panel room-summary');cab.append(node('h3',row.nombre),node('p',row.descripcion||'Esta sala todavía no tiene propósito publicado.'),node('span',row.gestionada?modos[row.ingreso]:row.tipo==='publica'?'Sala pública':'Sala con acceso','tag'),node('p',`${row.integrantes} ${Number(row.integrantes)===1?'integrante':'integrantes'}`));
     const mods=(row.moderadores||[]).map(m=>m.alias);cab.append(node('p',mods.length?`Moderación: ${mods.join(', ')}`:row.origen==='oficial'?'Moderación general de Core':'Administración del canal en Core','room-moderators'));
     const rules=node('div','','panel room-rules');rules.append(node('h3','Reglas'),node('p',row.reglas||'Se aplican las normas generales de Convergencia.'));
     const generales=node('a','Leer normas generales');generales.href=`${window.PlazaConfig.core}/normas-chats.html`;rules.append(generales);box.append(cab,rules);
