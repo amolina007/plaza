@@ -21,7 +21,7 @@
         (Array.isArray(post.canales)?post.canales:[]).forEach(canal=>{
           if (!/^[a-z0-9_-]+$/i.test(canal.slug || '')) return;
           const enlace=nodo('a',`Abrir ${canal.nombre} →`);
-          enlace.href=`${window.PlazaConfig.core}/messenger.html?sala=${encodeURIComponent(canal.slug)}`;
+          enlace.href=`${window.PlazaConfig.core}/chats.html?sala=${encodeURIComponent(canal.slug)}`;
           tarjeta.append(enlace);
         });
         lista.append(tarjeta);

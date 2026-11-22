@@ -22,6 +22,7 @@ else
   printf 'User-agent: *\nDisallow: /\n' > "$OUT/robots.txt"
   printf '\n/*\n  X-Robots-Tag: noindex, nofollow\n' >> "$OUT/_headers"
   sed -e 's|content="index, follow, max-image-preview:large"|content="noindex, nofollow"|' \
+    -e 's|https://core.convergenciaaura.cl/chats.html|https://dev.core.convergenciaaura.cl/chats.html|g' \
     index.html > "$OUT/index.html"
   echo "build: contexto ${CONTEXT:-sin definir} -> indexación bloqueada"
 fi

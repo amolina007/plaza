@@ -7,7 +7,7 @@
   const dev = host !== 'plaza.convergenciaaura.cl';
   window.PlazaConfig = Object.freeze({
     dev,
-    core: dev ? 'https://dev--convergencia-aura-core.netlify.app' : 'https://core.convergenciaaura.cl',
+    core: dev ? 'https://dev.core.convergenciaaura.cl' : 'https://core.convergenciaaura.cl',
   });
   if (!window.supabase) return;
   window.auraClient = window.supabase.createClient(

@@ -62,7 +62,7 @@
     if (!topics.length) box.append(el('p','muted','Los responsables de los canales todavía no han publicado un tema para esta semana.'));
     topics.forEach(r=>{
       const item=el('div','sidebar-topic');
-      item.append(el('small','',r.nombre),el('p','',r.tema),link('Conversar →',`messenger.html?sala=${encodeURIComponent(r.slug)}`));box.append(item);
+      item.append(el('small','',r.nombre),el('p','',r.tema),link('Conversar →',`chats.html?sala=${encodeURIComponent(r.slug)}`));box.append(item);
     });
   }
   function favoriteButton(row) {
@@ -112,7 +112,7 @@
     badges.append(el('span', '', ({ publica: 'Público', privada: 'Privado · con acceso', restringida: 'Restringido · con acceso' })[row.tipo] || 'Con acceso'));
     badges.append(el('span','category-label',info[1]));
     if (row.soy_miembro) badges.append(el('span', '', 'Ya eres integrante'));
-    const destination = `messenger.html?sala=${encodeURIComponent(row.slug)}`;
+    const destination = `chats.html?sala=${encodeURIComponent(row.slug)}`;
     const title = el('h4'); title.append(link(row.nombre, destination));
     article.append(badges, title, el('p', 'description', row.descripcion || 'Este canal todavía no tiene descripción.'));
     article.append(el('p', 'members', `${row.integrantes} ${Number(row.integrantes) === 1 ? 'integrante' : 'integrantes'}`));
