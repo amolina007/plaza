@@ -4,6 +4,7 @@
   const lista = document.getElementById('resumenes-diarios');
   const estado = document.getElementById('resumen-estado');
   if (!cliente || !lista || !estado || !window.PlazaConfig?.dev) return;
+  const interacciones=import('./feed-interacciones-ui.mjs');
   let version = 0;
   const nodo = (tag, texto) => { const n=document.createElement(tag); n.textContent=texto; return n; };
   async function cargar() {
@@ -24,7 +25,8 @@
           enlace.href=`${window.PlazaConfig.core}/chats.html?sala=${encodeURIComponent(canal.slug)}`;
           tarjeta.append(enlace);
         });
-        lista.append(tarjeta);
+        const social=nodo('div','');tarjeta.append(social);lista.append(tarjeta);
+        interacciones.then(m=>m.montarInteracciones(social,post,cliente)).catch(()=>{social.textContent='No se pudieron cargar las interacciones.';});
       });
       estado.textContent=data.length ? 'Una publicación por día cerrado · horario de Chile.' : 'El primer resumen aparecerá al cerrar el día.';
     } catch { if(actual===version) estado.textContent='No se pudieron cargar los resúmenes. Vuelve a abrir Feed para reintentar.'; }
