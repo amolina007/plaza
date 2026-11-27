@@ -47,7 +47,7 @@ export function crearInteracciones(item, obtenerUsuarioId, cliente) {
         document.createTextNode('Inicia sesión para participar. '),
       );
       const enlace = el('a', '', 'Entrar');
-      enlace.href = new URL('/mi-perfil.html', 'https://dev.core.convergenciaaura.cl').href;
+      enlace.href = new URL('mi-perfil.html', window.PlazaConfig.core + '/').href;
       estado.append(enlace);
     }
 
