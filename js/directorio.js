@@ -223,7 +223,7 @@
     event.preventDefault(); const button=event.currentTarget.querySelector('button'); button.disabled=true;
     pendingEmail=$('correo').value.trim(); $('acceso-estado').textContent='Solicitando código…';
     try {
-      const { error }=await client.auth.signInWithOtp({email:pendingEmail,options:{shouldCreateUser:false,emailRedirectTo:location.origin+'/'}});
+      const { error }=await client.auth.signInWithOtp({email:pendingEmail,options:{shouldCreateUser:false,emailRedirectTo:location.origin+(config.basePath||'/')}});
       if(error) throw error;
       $('acceso-codigo').hidden=false; $('codigo').focus();
       $('acceso-estado').textContent='Revisa el código enviado a tu correo. Usa una cuenta existente de Convergencia.';

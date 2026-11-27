@@ -5,7 +5,7 @@
   const host = window.location.hostname;
   const dev = window.PlazaConfig?.dev || /^dev--[a-z0-9-]+\.netlify\.app$/.test(host) || /^dev(?:\.[a-z0-9-]+)?\.convergenciaaura\.cl$/.test(host) || ['localhost', '127.0.0.1', 'verde-dev-convergencia-aura.netlify.app', 'planvecinal-dev-convergencia-aura.netlify.app'].includes(host);
   const script = document.createElement('script');
-  script.src = dev ? 'https://dev--convergencia-aura-core.netlify.app/js/aura-hub.js' : 'https://core.convergenciaaura.cl/js/aura-hub.js';
+  script.src = `${window.PlazaConfig.core}/js/aura-hub.js`;
   script.defer = true;
   script.setAttribute('data-aura-hub-core', '');
   document.head.append(script);
@@ -15,7 +15,7 @@
 (() => {
   const dev = /(^|[.-])dev([.-]|$)/i.test(location.hostname) || ['localhost','127.0.0.1'].includes(location.hostname);
   if (!dev || window.AuraSiteProfile || document.querySelector('script[data-site-profile-core]')) return;
-  const script=document.createElement('script');script.src='https://dev--convergencia-aura-core.netlify.app/js/aura-site-profile.js';script.dataset.site='plaza';script.dataset.siteProfileCore='';script.defer=true;document.head.append(script);
+  const script=document.createElement('script');script.src=`${window.PlazaConfig.core}/js/aura-site-profile.js`;script.dataset.site='plaza';script.dataset.siteProfileCore='';script.defer=true;document.head.append(script);
 })();
 
 /* Mensajería original de Core; reutiliza auraClient y deja libre la cinta móvil. */

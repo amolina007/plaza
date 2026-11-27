@@ -24,5 +24,8 @@ else
   sed -e 's|content="index, follow, max-image-preview:large"|content="noindex, nofollow"|' \
     -e 's|https://core.convergenciaaura.cl/chats.html|https://dev.core.convergenciaaura.cl/chats.html|g' \
     index.html > "$OUT/index.html"
+  if [ "${BRANCH:-dev}" = "dev" ]; then
+    printf '/* https://dev.convergenciaaura.cl/plaza/:splat 302!\n' > "$OUT/_redirects"
+  fi
   echo "build: contexto ${CONTEXT:-sin definir} -> indexación bloqueada"
 fi
